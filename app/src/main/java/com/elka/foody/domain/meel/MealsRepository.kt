@@ -4,5 +4,6 @@ import androidx.lifecycle.LiveData
 
 interface MealsRepository {
   fun getMeals(): LiveData<List<Meal>>
-  fun loadMeals(onEnd: () -> Unit)
+  fun loadMealsByNetwork(onEnd: () -> Unit)
+  fun getCashedMeals(): LiveData<List<Meal>>
 }
