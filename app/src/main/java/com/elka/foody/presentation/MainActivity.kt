@@ -1,7 +1,8 @@
-package com.elka.foody
+package com.elka.foody.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.elka.foody.R
 import com.elka.foody.data.meals.MealsRepositoryImpl
 
 class MainActivity : AppCompatActivity() {
@@ -10,12 +11,19 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onStart() {
+    super.onStart()
 
-    val rep = MealsRepositoryImpl
-    rep.loadMeals {
-      val items = rep.getMeals().value
+    val rep = MealsRepositoryImpl(application)
+
+
+    rep.getMeals().observe(this) {
+      val items = 1
+    }
+    rep.loadMealsByNetwork {}
+
+    rep.getCashedMeals().observe(this) {
+      val items = it
     }
   }
 }
