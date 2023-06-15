@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+
 }
 
 android {
@@ -41,4 +43,19 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Rx
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    // Swipe refresh layout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
 }
