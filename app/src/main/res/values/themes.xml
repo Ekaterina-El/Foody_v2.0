@@ -12,6 +12,7 @@
     <!-- Status bar color. -->
     <item name="android:statusBarColor">@color/white</item>
     <item name="android:windowLightStatusBar">true</item>
+    <item name="android:navigationBarColor">@color/menu_bg</item>
   </style>
 
   <style name="BottomNavigationViewStyle" parent="Widget.Design.BottomNavigationView">
