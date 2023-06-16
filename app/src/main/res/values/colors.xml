@@ -12,4 +12,5 @@
   <color name="primary">#FD3A69</color>
   <color name="accent_variant">#33FD3A69</color>
   <color name="item_color_inactive">#7B7B7B</color>
+  <color name="menu_bg">#F0F0F0</color>
 </resources>
