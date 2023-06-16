@@ -6,12 +6,20 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.elka.foody.R
 import com.elka.foody.data.meals.MealsRepositoryImpl
+import com.elka.foody.domain.meel.Meal
 
 class MainActivity : AppCompatActivity() {
-  private var networks = mutableListOf<Network>()
+  private val viewModel by lazy { ViewModelProvider(this)[MenuViewModel::class.java] }
+
+  private val cashedMealsObserver = Observer<List<Meal>> {
+    Log.d("cashedMealsObserver", "items: $it")
+  }
 
   private val networkRequest by lazy {
     NetworkRequest.Builder()
@@ -25,14 +33,12 @@ class MainActivity : AppCompatActivity() {
     object : ConnectivityManager.NetworkCallback() {
       override fun onAvailable(network: Network) {
         super.onAvailable(network)
-        networks.add(network)
-        Log.d("networkCallback_tag", "onAvailable: ${networks.isNotEmpty()}")
+        viewModel.onRegNetwork(network)
       }
 
       override fun onLost(network: Network) {
         super.onLost(network)
-        networks.remove(network)
-        Log.d("networkCallback_tag", "onLost: ${networks.isNotEmpty()}")
+        viewModel.onUnregNetwork(network)
       }
     }
   }
@@ -43,16 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     connectivityManager.requestNetwork(networkRequest, networkCallback)
-  }
 
-  override fun onStart() {
-    super.onStart()
-
-    val rep = MealsRepositoryImpl(application)
-
-
-    rep.getMeals().observe(this) { val items = 1 }
-    rep.loadMealsByNetwork {}
-    rep.getCashedMeals().observe(this) { val items = it }
+    viewModel.cashedMeals.observe(this, cashedMealsObserver)
   }
 }
