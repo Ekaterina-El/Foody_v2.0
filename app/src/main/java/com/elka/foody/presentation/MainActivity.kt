@@ -10,12 +10,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.elka.foody.R
 import com.elka.foody.data.meals.MealsRepositoryImpl
+import com.elka.foody.databinding.ActivityMainBinding
 import com.elka.foody.domain.meel.Meal
 
 class MainActivity : AppCompatActivity() {
   private val viewModel by lazy { ViewModelProvider(this)[MenuViewModel::class.java] }
+  private lateinit var binding: ActivityMainBinding
 
   private val cashedMealsObserver = Observer<List<Meal>> {
     Log.d("cashedMealsObserver", "items: $it")
@@ -45,11 +51,19 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
     val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     connectivityManager.requestNetwork(networkRequest, networkCallback)
 
     viewModel.cashedMeals.observe(this, cashedMealsObserver)
+
+    setupNavigation()
+  }
+
+  private fun setupNavigation() {
+    val navController = (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
+    binding.bottomMenu.setupWithNavController(navController)
   }
 }
